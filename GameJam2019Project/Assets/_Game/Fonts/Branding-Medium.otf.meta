@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 5a1406ef1dbe28243803d9a3e0669783
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Branding
+  fontNames:
+  - Branding
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 326f84c04176359459438de9d75dac8a, type: 3}
+  - {fileID: 12800000, guid: 4067ac2339a275f4587d84d9a4bdb9a1, type: 3}
+  - {fileID: 12800000, guid: 472e0553fc8ecc44c8581c99fa883a05, type: 3}
+  - {fileID: 12800000, guid: 4f741b28e66a78448b9f83da0dc843aa, type: 3}
+  - {fileID: 12800000, guid: 1f414e3a5cf851f4dabfd8cdc52bf21c, type: 3}
+  - {fileID: 12800000, guid: 4c087aadb1e31c042b61e9193d18b41c, type: 3}
+  - {fileID: 12800000, guid: 1a22712f40ba91e42a7a9297277d0225, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
