@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 savedVelocity;
 
+    private float jumpTimer;
+    private bool isJumping = false;
+
     private ILogger _logger;
     private IMessenger _messenger;
 
@@ -120,7 +123,19 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        _body.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+        if (!isJumping)
+        {
+            _body.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+            isJumping = true;
+            jumpTimer = Time.fixedDeltaTime + 0.1f;
+        }
+
+        if (jumpTimer <= 0)
+        {
+            isJumping = false;
+        }
+
+        jumpTimer -= Time.fixedDeltaTime;
     }
 
     private float HandleDash(float velocityX, bool isSprinting)
