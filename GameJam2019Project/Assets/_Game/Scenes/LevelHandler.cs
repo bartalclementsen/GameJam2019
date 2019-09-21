@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -30,6 +31,12 @@ public class LevelHandler : MonoBehaviour
 
     [SerializeField]
     private Button _victoryRestartButton;
+
+    [SerializeField]
+    private GameObject _failMenu;
+
+    [SerializeField]
+    private Button _failRestartButton;
 
     [SerializeField]
     private Button _continueButton;
@@ -130,7 +137,13 @@ public class LevelHandler : MonoBehaviour
     private bool _isPausePressed = false;
     private int _menuPressedBy = -1;
 
+    private bool _allPlayersDead = false;
+
     private void FixedUpdate(){
+
+        if(_allPlayersDead == true)
+            return;
+
         if(_isPausePressed == false) {
             for(int i = 0; i < _players.Count; i++) {
                 _isPausePressed = Input.GetAxis($"Player{(i + 1)}Pause") > 0;
@@ -141,6 +154,22 @@ public class LevelHandler : MonoBehaviour
                 }           
             }   
         }
+
+        //Check if all players a dead
+        bool isAnyPlayerAlive = _players.Any(p => p.gameObject.activeSelf);
+
+        if(isAnyPlayerAlive == false) 
+        {
+            _allPlayersDead = true;
+            StartCoroutine(nameof(HandleAllPlayersDead));
+            Debug.Log("ALL PLAYERS ARE DEAD");
+        }
+    }
+
+    private IEnumerator HandleAllPlayersDead() 
+    {
+        yield return new WaitForSeconds(0.5f);
+        ShowFailMenu();
     }
 
     private void ShowVicotryMenu() {
@@ -148,6 +177,14 @@ public class LevelHandler : MonoBehaviour
         _menu.SetActive(true);
         _victoryMenu.SetActive(true);
         _eventSystem.SetSelectedGameObject(_victoryRestartButton.gameObject, new BaseEventData(_eventSystem));
+        SetPauseGame(true);
+    }
+
+    private void ShowFailMenu() {
+        _audioSource.Pause();
+        _menu.SetActive(true);
+        _failMenu.SetActive(true);
+        _eventSystem.SetSelectedGameObject(_failRestartButton.gameObject, new BaseEventData(_eventSystem));
         SetPauseGame(true);
     }
 
