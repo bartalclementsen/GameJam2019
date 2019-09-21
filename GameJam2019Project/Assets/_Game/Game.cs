@@ -32,6 +32,8 @@ public class Game
     };
 
 
+    public static int test { get; set; } 
+
     private static Core.Loggers.ILogger _logger;
 
     [RuntimeInitializeOnLoadMethod]
