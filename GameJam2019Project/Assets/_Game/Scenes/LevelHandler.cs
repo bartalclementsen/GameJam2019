@@ -20,6 +20,18 @@ public class LevelHandler : MonoBehaviour
     private GameObject _menu;
 
     [SerializeField]
+    private GameObject _pauseMenu;
+
+    [SerializeField]
+    private GameObject _victoryMenu;
+
+    [SerializeField]
+    private Text _victoryText;
+
+    [SerializeField]
+    private Button _victoryRestartButton;
+
+    [SerializeField]
     private Button _continueButton;
 
     [SerializeField]
@@ -34,12 +46,39 @@ public class LevelHandler : MonoBehaviour
 
     private List<PlayerController> _players;
 
+    private Core.Mediators.IMessenger _messenger;
+    private Core.Mediators.ISubscriptionToken _victoryMessageSubscriptionToken;
+
     private void Start()
     {
         _eventSystem = GameObject.FindObjectOfType<EventSystem>();
         _audioSource = GetComponent<AudioSource>();
+        _messenger = Game.Container.Resolve<Core.Mediators.IMessenger>();
+
+        _victoryMessageSubscriptionToken = _messenger.Subscribe<VictoryMessage>(vm => {
+            StartCoroutine(nameof(HandleVictory), vm.VictoriousPlayerController);
+        });
 
         StartCoroutine(nameof(InitializeGame));
+    }
+
+    private IEnumerator HandleVictory(PlayerController playerController) {
+        foreach(var player in _players) {
+
+            if(player.playerNumber != playerController.playerNumber)  
+            {
+                player.gameObject.SetActive(false);
+            }
+        }
+
+        _victoryText.text = "Player " + playerController.playerNumber + " wins";
+
+        yield return new WaitForSeconds(1.3f);
+        ShowVicotryMenu();
+    }
+
+    private void OnDestroy() {
+        _victoryMessageSubscriptionToken?.Dispose();
     }
 
     private IEnumerator InitializeGame() 
@@ -97,21 +136,30 @@ public class LevelHandler : MonoBehaviour
                 _isPausePressed = Input.GetAxis($"Player{(i + 1)}Pause") > 0;
                 if(_isPausePressed) {
                     _menuPressedBy = i;
-                    ShowMenu();
+                    ShowPauseMenu();
                     break;
                 }           
             }   
         }
     }
 
-    private void ShowMenu() {
+    private void ShowVicotryMenu() {
         _audioSource.Pause();
         _menu.SetActive(true);
+        _victoryMenu.SetActive(true);
+        _eventSystem.SetSelectedGameObject(_victoryRestartButton.gameObject, new BaseEventData(_eventSystem));
+        SetPauseGame(true);
+    }
+
+    private void ShowPauseMenu() {
+        _audioSource.Pause();
+        _menu.SetActive(true);
+        _pauseMenu.SetActive(true);
         _eventSystem.SetSelectedGameObject(_continueButton.gameObject, new BaseEventData(_eventSystem));
         SetPauseGame(true);
     }
 
-    private void HideMenu() {
+    private void HidePauseMenu() {
         _isPausePressed = false;
         _audioSource.UnPause();
         _menu.SetActive(false);
@@ -124,7 +172,7 @@ public class LevelHandler : MonoBehaviour
     }
 
     public void MenuContinue() {
-        HideMenu();
+        HidePauseMenu();
     }
 
     public void MenuExit() {
