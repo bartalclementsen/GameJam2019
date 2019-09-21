@@ -188,7 +188,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Title Goes Here
+  m_Text: "S\xED\xF0sti dropi"
 --- !u!222 &1022332
 CanvasRenderer:
   m_ObjectHideFlags: 0
