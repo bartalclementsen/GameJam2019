@@ -9,6 +9,7 @@ using ILogger = Core.Loggers.ILogger;
 public class PlayerController : MonoBehaviour
 {
     public int playerNumber = 1;
+    public Color playerColor = Color.white;
     public float moveSpeed = 5f;
     public float jumpPower = 5f;
     public bool debugEnabled = false;

@@ -53,6 +53,7 @@ public class LevelHandler : MonoBehaviour
 
     private List<PlayerController> _players;
 
+
     private Core.Mediators.IMessenger _messenger;
     private Core.Mediators.ISubscriptionToken _victoryMessageSubscriptionToken;
 
@@ -99,11 +100,14 @@ public class LevelHandler : MonoBehaviour
 
         _players = new List<PlayerController>();
 
+        int randomColorStartIndex = (int) Random.Range(0, Game.PlayerColors.Count - 1f);
+
         for(int i = 0; i < playerCount; i++) {
             GameObject player = Instantiate(_playerPerfab, _playerSpawn.position, Quaternion.identity, null);
 
             PlayerController playerController = player.GetComponent<PlayerController>();
             playerController.playerNumber = i + 1;
+            playerController.playerColor = Game.PlayerColors[(playerController.playerNumber + randomColorStartIndex) % Game.PlayerColors.Count];
             playerController.canMakeActions = false;
             _players.Add(playerController);
         }
