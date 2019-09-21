@@ -279,7 +279,7 @@ RectTransform:
   - {fileID: 1319078772}
   - {fileID: 1089016042}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSpawn: {fileID: 886532370}
-  _playerPerfab: {fileID: 8598722474168066541, guid: 496861a8b267ad140a1a4589fe21be7d,
+  _playerPerfab: {fileID: 1720526119816013475, guid: 1a7afa56db38fdc47997927aeb25e92f,
     type: 3}
   _followCameraController: {fileID: 722718018}
   _menu: {fileID: 1089016041}
@@ -2067,3 +2067,90 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b2a10aed6b1f8e47bd141a8c44211b5, type: 3}
+--- !u!1001 &1614220205241536200
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4594052596555605686, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_Name
+      value: VictoryZone
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 72.239
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.356879
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563277245611691572, guid: fc210d910fc80dc44bf99abc28573add,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fc210d910fc80dc44bf99abc28573add, type: 3}
+--- !u!1 &1614220205241536201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4594052596555605686, guid: fc210d910fc80dc44bf99abc28573add,
+    type: 3}
+  m_PrefabInstance: {fileID: 1614220205241536200}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1614220205241536202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614220205241536201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22c7687697c18ba45ad3bf2a900a9cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
