@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 5f;
     public bool debugEnabled = false;
 
+
+    public float groundRayDistance = 0.48f;
+    public float groundRayAngle = 45f;
+    public int groundRayNumber = 9;
+
     public bool canMakeActions = true;
 
     public LayerMask groundLayers;
@@ -61,7 +66,15 @@ public class PlayerController : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = new Color(0, 1, 0, 0.5f);
-        Gizmos.DrawCube(new Vector2(transform.position.x, transform.position.y - 0.505f), new Vector2(1, 0.1f));
+
+        var down = -Vector2.up;
+        for (float f = -0.5f * groundRayAngle; f <= 0.5f * groundRayAngle; f += groundRayAngle / groundRayNumber)
+        {
+            var direction = Quaternion.Euler(0, 0, f) * down;
+            //RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, groundRayDistance);
+            Gizmos.DrawRay(transform.position, direction * groundRayDistance);
+        }
+        
     }
 
     void FixedUpdate()
@@ -93,7 +106,19 @@ public class PlayerController : MonoBehaviour
                 _logger.Log("Sprint!");
         }
 
-        _isGrounded = Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y), _circleCollider2d.radius * transform.localScale.x, groundLayers);
+
+        Vector2 down = -Vector2.up;
+        bool didHit = false;
+        for (float f = -0.5f * groundRayAngle; f <= 0.5f* groundRayAngle; f += groundRayAngle / groundRayNumber)
+        {
+            var direction = Quaternion.Euler(0, 0, f) * down;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, groundRayDistance, groundLayers);
+            
+            didHit = didHit || (hit.collider != null);
+        }
+        _isGrounded = didHit;
+        Debug.Log(_isGrounded);
+
 
         Vector2 newVelocity = _body.velocity;
         newVelocity = Move(moveHorizontal, moveVertical);

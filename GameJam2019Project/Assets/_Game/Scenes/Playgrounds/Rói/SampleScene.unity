@@ -652,12 +652,17 @@ PrefabInstance:
     - target: {fileID: 1720526119816013484, guid: 1a7afa56db38fdc47997927aeb25e92f,
         type: 3}
       propertyPath: moveSpeed
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1720526119816013484, guid: 1a7afa56db38fdc47997927aeb25e92f,
         type: 3}
       propertyPath: dashSpeed
-      value: 10
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1720526119816013484, guid: 1a7afa56db38fdc47997927aeb25e92f,
+        type: 3}
+      propertyPath: maxDash
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a7afa56db38fdc47997927aeb25e92f, type: 3}
