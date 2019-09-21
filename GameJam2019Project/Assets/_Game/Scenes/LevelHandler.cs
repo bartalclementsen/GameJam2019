@@ -85,10 +85,14 @@ public class LevelHandler : MonoBehaviour
     {
         //Spawn Players
         int playerCount = Game.NumberOfPlayers;
-        if(playerCount == 0)
+        Debug.Log(playerCount);
+        Debug.Log(Game.test);
+
+        if (playerCount == 0)
         {
             playerCount = 2;
         }
+
 
         _players = new List<PlayerController>();
 
