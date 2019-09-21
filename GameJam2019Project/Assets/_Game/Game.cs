@@ -1,6 +1,7 @@
 ﻿using Core.Containers;
 using Core.Loggers;
 using Core.Mediators;
+using Fading;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,6 +56,7 @@ public class Game
 
         containerBuilder.Register<ILoggerFactory, LoggerFactory>();
         containerBuilder.RegisterSingleton<IMessenger, Messenger>();
+        containerBuilder.RegisterSingleton<IFadeService, FadeService>();
 
         Container = containerBuilder.Build();
     }
