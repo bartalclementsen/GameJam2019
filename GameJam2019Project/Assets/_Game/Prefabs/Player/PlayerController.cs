@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 5f;
     public bool debugEnabled = false;
 
-
+    public Vector3 rayCenterOffset;
     public float groundRayDistance = 0.48f;
     public float groundRayAngle = 45f;
     public int groundRayNumber = 9;
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask groundLayers;
 
-    private bool _isGrounded;
+    public bool isGrounded;
     private Rigidbody2D _body;
     private CircleCollider2D _circleCollider2d;
     private FaceDirection _faceDirection = FaceDirection.Right;
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         {
             var direction = Quaternion.Euler(0, 0, f) * down;
             //RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, groundRayDistance);
-            Gizmos.DrawRay(transform.position, direction * groundRayDistance);
+            Gizmos.DrawRay(transform.position + rayCenterOffset, direction * groundRayDistance);
         }
         
     }
@@ -112,13 +112,11 @@ public class PlayerController : MonoBehaviour
         for (float f = -0.5f * groundRayAngle; f <= 0.5f* groundRayAngle; f += groundRayAngle / groundRayNumber)
         {
             var direction = Quaternion.Euler(0, 0, f) * down;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, groundRayDistance, groundLayers);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position + rayCenterOffset, direction, groundRayDistance, groundLayers);
             
             didHit = didHit || (hit.collider != null);
         }
-        _isGrounded = didHit;
-        Debug.Log(_isGrounded);
-
+        isGrounded = didHit;
 
         Vector2 newVelocity = _body.velocity;
         newVelocity = Move(moveHorizontal, moveVertical);
@@ -132,16 +130,26 @@ public class PlayerController : MonoBehaviour
         _body.velocity = newVelocity;
 
         // Jump (only if grounded)
-        if (isJumping && _isGrounded)
+        if (isJumping && isGrounded)
             Jump();
     }
 
     private Vector2 Move(float moveHorizontal, float moveVertical)
     {
-        if (moveHorizontal > 0)
-            _faceDirection = FaceDirection.Right;
-        else
-            _faceDirection = FaceDirection.Left;
+        var oldDirection = _faceDirection;
+
+        if (Mathf.Abs(moveHorizontal) > 0.1)
+        {
+            if (moveHorizontal > 0)
+                _faceDirection = FaceDirection.Right;
+            else
+                _faceDirection = FaceDirection.Left;
+        }
+
+        if(oldDirection != _faceDirection)
+        {
+            _messenger.Publish(new ChangeDirectionMessage(this, playerNumber));
+        }
 
         return new Vector2(moveHorizontal * moveSpeed, _body.velocity.y);
     }
@@ -218,6 +226,7 @@ public class PlayerController : MonoBehaviour
     private void HandleSlapped(Vector2 position)
     {
         _logger.Log($"Someone slapped at position: ({position.x}, {position.y})");
+        
     }
 }
 
