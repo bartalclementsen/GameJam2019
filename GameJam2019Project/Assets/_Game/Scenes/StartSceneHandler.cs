@@ -12,30 +12,61 @@ public class StartSceneHandler : MonoBehaviour
     [SerializeField]
     private Text _versionText;
 
+    [SerializeField]
+    private GameObject _mainMenuPanel;
+
+    [SerializeField]
+    private GameObject _numberOfPlayerPanel;
+
+    [SerializeField]
+    private GameObject _readyPanel;
+
     private void Start()
     {
         _versionText.text = $"{Application.companyName} - {Application.productName} - version: {Application.version}";
+
+        _mainMenuPanel.SetActive(true);
+        _numberOfPlayerPanel.SetActive(false);
+        _readyPanel.SetActive(false);
     }
 
     private void Update()
     {
-        Debug.Log($"Player1Horizontal: {Input.GetAxis("Player1Horizontal")}");
-        Debug.Log($"Player1Vertical: {Input.GetAxis("Player1Vertical")}");
-        Debug.Log($"Player1Fire1: {Input.GetAxis("Player1Fire1")}");
-        Debug.Log($"Player1Fire2: {Input.GetAxis("Player1Fire2")}");
-        Debug.Log($"Player1Jump: {Input.GetAxis("Player1Jump")}");
-        Debug.Log($"Player1Submit: {Input.GetAxis("Player1Submit")}");
-        Debug.Log($"Player1Cancel: {Input.GetAxis("Player1Cancel")}");
-        Debug.Log($"Player1Pause: {Input.GetAxis("Player1Pause")}");
     }
 
     public void StartNewGame() 
     {
+        _mainMenuPanel.SetActive(false);
+        _numberOfPlayerPanel.SetActive(true);
+    }
+
+    public void StartGame() 
+    {
         SceneManager.LoadSceneAsync(1);
     }
+
+     public void SelectNumberOfPlayer(int numberOfPlayers) 
+    {
+        _numberOfPlayerPanel.SetActive(false);
+        _readyPanel.SetActive(true);
+    }
+    
+    public void NumberOfPlayersBack() 
+    {
+        _mainMenuPanel.SetActive(true);
+        _numberOfPlayerPanel.SetActive(false);
+    }
+
+    public void ReadyBack() 
+    {
+        _numberOfPlayerPanel.SetActive(true);
+        _readyPanel.SetActive(false);
+    }
+
 
     public void Exit() 
     {
         Application.Quit();
     }
 }
+
