@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public int playerNumber = 1;
     public Color playerColor = Color.white;
     public float moveSpeed = 5f;
-    public float jumpPower = 5f;
+    public float jumpPower = 7f;
     public bool debugEnabled = false;
 
     public Vector3 rayCenterOffset;
@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded;
     private Rigidbody2D _body;
-    private CircleCollider2D _circleCollider2d;
     private FaceDirection _faceDirection = FaceDirection.Right;
 
     // Dash
@@ -36,9 +35,6 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 savedVelocity;
 
-    private float jumpTimer;
-    private bool isJumping = false;
-
     private ILogger _logger;
     private IMessenger _messenger;
 
@@ -46,7 +42,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _body = GetComponent<Rigidbody2D> ();
-        _circleCollider2d = GetComponent<CircleCollider2D>();
 
         _logger = Game.Container.Resolve<ILoggerFactory>().Create(this);
         _messenger = Game.Container.Resolve<IMessenger>();
@@ -72,7 +67,6 @@ public class PlayerController : MonoBehaviour
         for (float f = -0.5f * groundRayAngle; f <= 0.5f * groundRayAngle; f += groundRayAngle / groundRayNumber)
         {
             var direction = Quaternion.Euler(0, 0, f) * down;
-            //RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, groundRayDistance);
             Gizmos.DrawRay(transform.position + rayCenterOffset, direction * groundRayDistance);
         }
         
@@ -157,19 +151,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (!isJumping)
-        {
-            _body.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
-            isJumping = true;
-            jumpTimer = Time.fixedDeltaTime + 0.1f;
-        }
-
-        if (jumpTimer <= 0)
-        {
-            isJumping = false;
-        }
-
-        jumpTimer -= Time.fixedDeltaTime;
+        _body.velocity = new Vector2(_body.velocity.x, jumpPower);
     }
 
     private float HandleDash(float velocityX, bool isSprinting)
