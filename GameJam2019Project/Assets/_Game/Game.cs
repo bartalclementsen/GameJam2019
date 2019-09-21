@@ -7,6 +7,8 @@ public class Game
 {
     public static IContainer Container { get; private set; }
 
+    public static int NumberOfPlayers { get; set; }
+
     private static Core.Loggers.ILogger _logger;
 
     [RuntimeInitializeOnLoadMethod]

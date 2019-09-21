@@ -47,6 +47,8 @@ public class StartSceneHandler : MonoBehaviour
 
      public void SelectNumberOfPlayer(int numberOfPlayers) 
     {
+        Game.NumberOfPlayers = numberOfPlayers;
+        
         _numberOfPlayerPanel.SetActive(false);
         _readyPanel.SetActive(true);
     }
