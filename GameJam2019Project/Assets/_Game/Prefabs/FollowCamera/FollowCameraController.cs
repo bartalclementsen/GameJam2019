@@ -63,14 +63,17 @@ public class FollowCameraController : MonoBehaviour
         
         Vector3 currentPosition = this.transform.position;
 
-        GameObject[] sortedPlayersByHeight = _players
-            .Where(p => p.activeSelf)
-            .OrderBy(p => p.transform.position.y).ToArray();
+        var activePlayers = _players.Where(p => p.activeSelf);
+
+        if(activePlayers.Any() == false)
+        {
+            return;
+        }
+
+        GameObject[] sortedPlayersByHeight = activePlayers.OrderBy(p => p.transform.position.y).ToArray();
 
         // Get all active players, ordered by x pos
-        GameObject[] sortedPlayers = _players
-            .Where(p => p.activeSelf)
-            .OrderBy(p => p.transform.position.x).ToArray();
+        GameObject[] sortedPlayers = activePlayers.OrderBy(p => p.transform.position.x).ToArray();
 
         GameObject highestPlayer = sortedPlayersByHeight[0];
         GameObject lowestPlayer = sortedPlayersByHeight[sortedPlayers.Length - 1];
