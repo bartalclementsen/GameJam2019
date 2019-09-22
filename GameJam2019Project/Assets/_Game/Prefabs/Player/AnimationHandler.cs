@@ -45,11 +45,13 @@ public class AnimationHandler : MonoBehaviour
         {
             if (message.PlayerNumber == _playerController.playerNumber && _dashParticlePrefab != null)
             {
-                var particles = GameObject.Instantiate(_dashParticlePrefab);
-
                 if (_playerSkin != null)
+                {
+                    var particles = GameObject.Instantiate(_dashParticlePrefab);
                     particles.transform.SetParent(_playerSkin.transform);
-
+                    particles.transform.localScale = Vector3.one;
+                    particles.transform.localPosition = Vector3.zero;
+                }
             }
         });
     }

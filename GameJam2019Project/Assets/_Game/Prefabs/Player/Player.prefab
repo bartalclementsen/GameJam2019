@@ -344,7 +344,7 @@ MonoBehaviour:
   playerNumber: 1
   playerColor: {r: 1, g: 1, b: 1, a: 1}
   moveSpeed: 2.5
-  jumpPower: 7
+  jumpPower: 9
   maxDashes: 3
   dashesUsed: 0
   debugEnabled: 0
