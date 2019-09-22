@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Fading;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,10 +37,15 @@ public class StartSceneHandler : MonoBehaviour
     private bool _hasTransitioned = false;
 
     private bool _isStarting = false;
+    private IFadeService _fadeService;
 
     private void Start()
     {
         _versionText.text = $"{Application.companyName} - {Application.productName} - version: {Application.version}";
+
+        _fadeService = Game.Container.Resolve<IFadeService>();
+
+        _fadeService.DoFade(FadeDirection.FromBlack, 1.5f);
     }
 
     private void Update()
@@ -97,6 +103,8 @@ public class StartSceneHandler : MonoBehaviour
 
     public void StartGame()
     {
+        _fadeService.DoFade(FadeDirection.ToBlack);
+
         if (_isStarting == true)
             return;
 

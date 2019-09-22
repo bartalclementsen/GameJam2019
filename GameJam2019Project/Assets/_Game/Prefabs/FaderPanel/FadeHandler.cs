@@ -6,15 +6,16 @@ using UnityEngine.UI;
 
 namespace Fading
 {
+    public enum FadeDirection
+    {
+        FromBlack, ToBlack, Toggle
+    }
+
     public interface IFadeService
     {
         void SetFadeTime(float newTime);
 
-        bool FadeToggle();
-        
-        bool FadeFromBlack();
-
-        bool FadeToBlack();
+        void DoFade(FadeDirection direction, float delaySeconds = 0f);
     }
 
     public class FadeService : IFadeService
@@ -32,13 +33,31 @@ namespace Fading
         public void SetFadeTime(float newTime)
         {
             FadeTime = newTime;
-            if(ActiveHandler != null)
+            if (ActiveHandler != null)
             {
                 ActiveHandler.TimeToFade = newTime;
             }
         }
 
-        public bool FadeToggle()
+        public void DoFade(FadeDirection direction, float delaySeconds = 0f)
+        {
+            switch (direction)
+            {
+                case FadeDirection.FromBlack:
+                    ActiveHandler?.Invoke(nameof(FadeHandler.FromBlack), delaySeconds);
+                    break;
+                case FadeDirection.ToBlack:
+                    ActiveHandler?.Invoke(nameof(FadeHandler.ToBlack), delaySeconds);
+                    break;
+                case FadeDirection.Toggle:
+                    ActiveHandler?.Invoke(nameof(FadeHandler.ToBlack), delaySeconds);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        bool FadeToggle()
         {
             if (ActiveHandler == null)
             {
@@ -51,7 +70,7 @@ namespace Fading
             return true;
         }
 
-        public bool FadeFromBlack()
+        bool FadeFromBlack()
         {
             if (ActiveHandler == null)
             {
@@ -64,7 +83,7 @@ namespace Fading
             return true;
         }
 
-        public bool FadeToBlack()
+        bool FadeToBlack()
         {
             if (ActiveHandler == null)
             {
