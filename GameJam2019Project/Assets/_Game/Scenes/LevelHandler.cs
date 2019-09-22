@@ -101,11 +101,16 @@ public class LevelHandler : MonoBehaviour
 
         _players = new List<PlayerController>();
 
+        if(playersToStart == null)
+        {
+            playersToStart = new List<int>() { 1, 2, 3, 4 };
+        }
+
         for(int i = 0; i < playersToStart.Count(); i++) {
             GameObject player = Instantiate(_playerPerfab, _playerSpawn.position, Quaternion.identity, null);
 
             PlayerController playerController = player.GetComponent<PlayerController>();
-            playerController.playerNumber = Game.PlayersToStart[i];
+            playerController.playerNumber = playersToStart[i];
             playerController.playerColor = Game.PlayerColors[(playerController.playerNumber - 1) % Game.PlayerColors.Count];
             playerController.canMakeActions = false;
             _players.Add(playerController);
