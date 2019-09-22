@@ -45,4 +45,9 @@ public class AnimationHandler : MonoBehaviour
         _animator.SetBool("isGrounded", _playerController.isGrounded);
         _animator.SetFloat("speed", speed * scaleSpeed);
     }
+
+    private void OnDestroy()
+    {
+        _changeDirectionToken.Dispose();
+    }
 }
