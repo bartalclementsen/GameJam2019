@@ -43,6 +43,8 @@ public class StartSceneHandler : MonoBehaviour
 
     private void Start()
     {
+        Game.HasControlsMenuBeenShow = false;
+        
         _versionText.text = $"{Application.companyName} - {Application.productName} - version: {Application.version}";
 
         _fadeService = Game.Container.Resolve<IFadeService>();
