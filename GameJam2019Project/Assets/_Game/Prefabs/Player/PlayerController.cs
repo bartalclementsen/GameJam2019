@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     public Color playerColor = Color.white;
     public float moveSpeed = 5f;
     public float jumpPower = 7f;
+    public int maxDashes = 3;
+    public int dashesUsed = 0;
+
     public bool debugEnabled = false;
 
     public Vector3 rayCenterOffset;
@@ -26,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     private Rigidbody2D _body;
     private FaceDirection _faceDirection = FaceDirection.Right;
+
 
     // Dash
     public DashState dashState;
@@ -161,8 +165,10 @@ public class PlayerController : MonoBehaviour
         switch (dashState)
         {
             case DashState.Ready:
-                if (isSprinting)
+                if (isSprinting && dashesUsed < maxDashes)
                 {
+                    dashesUsed++;
+
                     savedVelocity = _body.velocity;
 
                     if (_faceDirection == FaceDirection.Right)
