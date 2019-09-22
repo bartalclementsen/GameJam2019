@@ -347,6 +347,8 @@ MonoBehaviour:
   jumpPower: 9
   maxDashes: 3
   dashesUsed: 0
+  slapRange: 0.73
+  slapRadius: 0.74
   debugEnabled: 0
   rayCenterOffset: {x: 0, y: 0.18, z: 0}
   groundRayDistance: 0.5

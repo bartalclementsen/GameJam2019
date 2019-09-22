@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     public int maxDashes = 3;
     public int dashesUsed = 0;
 
+    public float slapRange = 0.75f;
+    public float slapRadius = 0.25f;
+
+
     public bool debugEnabled = false;
 
     public Vector3 rayCenterOffset;
@@ -74,11 +78,26 @@ public class PlayerController : MonoBehaviour
             var direction = Quaternion.Euler(0, 0, f) * down;
             Gizmos.DrawRay(transform.position + rayCenterOffset, direction * groundRayDistance);
         }
-        
+
+        Vector2 slapperHitPosition = new Vector2(transform.position.x + slapRange, transform.position.y);
+        Gizmos.DrawWireSphere(new Vector3(slapperHitPosition.x, slapperHitPosition.y, 0f), slapRadius);
+
+
     }
 
     void FixedUpdate()
     {
+        Vector2 down = -Vector2.up;
+        bool didHit = false;
+        for (float f = -0.5f * groundRayAngle; f <= 0.5f * groundRayAngle; f += groundRayAngle / groundRayNumber)
+        {
+            var direction = Quaternion.Euler(0, 0, f) * down;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position + rayCenterOffset, direction, groundRayDistance, groundLayers);
+
+            didHit = didHit || (hit.collider != null);
+        }
+        isGrounded = didHit;
+
         if (!canMakeActions)
             return;
 
@@ -105,18 +124,6 @@ public class PlayerController : MonoBehaviour
             if (isSprinting)
                 _logger.Log("Sprint!");
         }
-
-
-        Vector2 down = -Vector2.up;
-        bool didHit = false;
-        for (float f = -0.5f * groundRayAngle; f <= 0.5f* groundRayAngle; f += groundRayAngle / groundRayNumber)
-        {
-            var direction = Quaternion.Euler(0, 0, f) * down;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position + rayCenterOffset, direction, groundRayDistance, groundLayers);
-            
-            didHit = didHit || (hit.collider != null);
-        }
-        isGrounded = didHit;
 
         Vector2 newVelocity = _body.velocity;
         newVelocity = Move(moveHorizontal, moveVertical);
@@ -162,6 +169,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        _messenger.Publish(new JumpMessage(this, this.playerNumber));
         _body.velocity = new Vector2(_body.velocity.x, jumpPower);
     }
 
@@ -254,9 +262,12 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector2 slapperPosition = message.SlapPosition;
+        Vector2 slapperHitPosition = new Vector2(slapperPosition.x + slapRange, slapperPosition.y);
         Vector3 myPosition = transform.position;
 
-        if (slapperPosition.x < myPosition.x && (slapperPosition.x + 0.5f) >= myPosition.x)
+
+
+        if (Vector2.Distance(myPosition, slapperHitPosition) <= slapRadius)
         {
             _messenger.Publish(new WasSlappedMessage(this, playerNumber));
 
