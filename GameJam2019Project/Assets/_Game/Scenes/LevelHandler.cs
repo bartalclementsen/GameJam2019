@@ -87,7 +87,7 @@ public class LevelHandler : MonoBehaviour
 
         _victoryText.text = "Player " + playerController.playerNumber + " wins";
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(4f);
         ShowVicotryMenu();
     }
 

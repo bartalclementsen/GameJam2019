@@ -17,6 +17,10 @@ public class VictoryMessage : Core.Mediators.IMessage
 public class VictoryZoneHandler : MonoBehaviour
 {
     private Core.Mediators.IMessenger _messenger;
+
+    [SerializeField]
+    private GameObject WinEffect;
+
     private void Start() {
         _messenger = Game.Container.Resolve<Core.Mediators.IMessenger>();
     }
@@ -26,6 +30,7 @@ public class VictoryZoneHandler : MonoBehaviour
         PlayerController playerController = col.gameObject.GetComponent<PlayerController>();
         if(playerController != null) {
             _messenger.Publish(new VictoryMessage(this, playerController));
+            WinEffect.SetActive(true);
             Debug.Log(playerController.gameObject.name + " wins!");
         }
     }
