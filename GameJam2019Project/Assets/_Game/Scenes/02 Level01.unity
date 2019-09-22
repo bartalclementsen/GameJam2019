@@ -1010,7 +1010,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: fb89591092b40b24da8340c49878dd39, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 09f84fa1e9918a34ca25540ed3d7dc1e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.382
   m_Pitch: 1
@@ -2924,6 +2924,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: FollowCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 1002284238438058059, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
+        type: 3}
+      propertyPath: _horizontalPadding
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1002284238438058059, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
+        type: 3}
+      propertyPath: _bottomPadding
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1002284238438058059, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
+        type: 3}
+      propertyPath: _minWidth
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1002284238438058056, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2983,21 +2998,6 @@ PrefabInstance:
         type: 3}
       propertyPath: orthographic size
       value: 3.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 1002284238438058059, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
-        type: 3}
-      propertyPath: _horizontalPadding
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1002284238438058059, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
-        type: 3}
-      propertyPath: _bottomPadding
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1002284238438058059, guid: 4b2a10aed6b1f8e47bd141a8c44211b5,
-        type: 3}
-      propertyPath: _minWidth
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b2a10aed6b1f8e47bd141a8c44211b5, type: 3}
