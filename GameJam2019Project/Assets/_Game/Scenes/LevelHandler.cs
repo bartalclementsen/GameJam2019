@@ -104,7 +104,7 @@ public class LevelHandler : MonoBehaviour
 
         if(playersToStart == null)
         {
-            playersToStart = new List<int>() { 1, 2 };
+            playersToStart = new List<int>() { 1, 2, 3, 4 };
         }
 
         for(int i = 0; i < playersToStart.Count(); i++) {

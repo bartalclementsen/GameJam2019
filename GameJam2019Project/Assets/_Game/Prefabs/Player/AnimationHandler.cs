@@ -9,12 +9,17 @@ public class AnimationHandler : MonoBehaviour
 {
     [SerializeField]
     private GameObject _playerSkin;
+
+    [SerializeField]
+    private GameObject _dashParticlePrefab;
+
     private PlayerController _playerController;
     private Animator _animator;
     private Rigidbody2D _rigidbody;
     private IMessenger _messenger;
     private Core.Loggers.ILogger _logger;
     ISubscriptionToken _changeDirectionToken;
+    ISubscriptionToken _dashAnimationToken;
 
     public float scaleSpeed = 1f;
 
@@ -34,7 +39,18 @@ public class AnimationHandler : MonoBehaviour
                 _logger.Log($"Player {message.PlayerNumber} changed direction.");
                 _playerSkin.transform.localScale = new Vector3(_playerSkin.transform.localScale.x * -1f, _playerSkin.transform.localScale.z, _playerSkin.transform.localScale.z);
             }
+        });
 
+        _dashAnimationToken = _messenger.Subscribe<DashAnimationMessage>((message) =>
+        {
+            if (message.PlayerNumber == _playerController.playerNumber && _dashParticlePrefab != null)
+            {
+                var particles = GameObject.Instantiate(_dashParticlePrefab);
+
+                if (_playerSkin != null)
+                    particles.transform.SetParent(_playerSkin.transform);
+
+            }
         });
     }
 
@@ -48,6 +64,7 @@ public class AnimationHandler : MonoBehaviour
 
     private void OnDestroy()
     {
-        _changeDirectionToken.Dispose();
+        _changeDirectionToken?.Dispose();
+        _dashAnimationToken?.Dispose();
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Core.Loggers;
 using Core.Mediators;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ILogger = Core.Loggers.ILogger;
 
@@ -29,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     private Rigidbody2D _body;
     private FaceDirection _faceDirection = FaceDirection.Right;
+    private FaceDirection _dashingDirection;
 
 
     // Dash
@@ -37,10 +36,13 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 3f;
     public float maxDash = 20f;
 
+    private bool _slapped;
+
     public Vector2 savedVelocity;
 
     private ILogger _logger;
     private IMessenger _messenger;
+    private ISubscriptionToken _slapMessageToken;
 
 
     void Start()
@@ -50,15 +52,9 @@ public class PlayerController : MonoBehaviour
         _logger = Game.Container.Resolve<ILoggerFactory>().Create(this);
         _messenger = Game.Container.Resolve<IMessenger>();
 
-        _messenger.Subscribe<SlapMessage>((message) =>
+        _slapMessageToken = _messenger.Subscribe<SlapMessage>((message) =>
         {
-            if (message.PlayerNumber == playerNumber)
-            {
-                _logger.Log($"I slapped at position: ({message.SlapPosition.x}, {message.SlapPosition.y})");
-            } else
-            {
-                HandleSlapped(message.SlapPosition);
-            }
+            HandleSlapped(message);      
         });
 
     }
@@ -124,7 +120,13 @@ public class PlayerController : MonoBehaviour
         if (isSlapping)
             Slap();
 
-        // Sprint
+        // Sprint / Slap
+        if (_slapped)
+        {
+            savedVelocity = new Vector2(1, 0);
+            _slapped = false;
+        }
+
         newVelocity.x = HandleDash(newVelocity.x, isSprinting);
         _body.velocity = newVelocity;
 
@@ -167,14 +169,22 @@ public class PlayerController : MonoBehaviour
             case DashState.Ready:
                 if (isSprinting && dashesUsed < maxDashes)
                 {
+                    _messenger.Publish(new DashAnimationMessage(this, playerNumber));
+
                     dashesUsed++;
 
                     savedVelocity = _body.velocity;
 
                     if (_faceDirection == FaceDirection.Right)
+                    {
                         resultSpeed = Math.Abs(velocityX) * dashSpeed;
+                        _dashingDirection = FaceDirection.Right;
+                    }
                     else
+                    {
                         resultSpeed = -Math.Abs(velocityX) * dashSpeed;
+                        _dashingDirection = FaceDirection.Left;
+                    }
 
                     dashState = DashState.Dashing;
                 }
@@ -182,7 +192,7 @@ public class PlayerController : MonoBehaviour
             case DashState.Dashing:
                 dashTimer += Time.fixedDeltaTime * 3;
 
-                if (_faceDirection == FaceDirection.Right)
+                if (_dashingDirection == FaceDirection.Right)
                     resultSpeed = Math.Abs(savedVelocity.x) * dashSpeed;
                 else
                     resultSpeed = -Math.Abs(savedVelocity.x) * dashSpeed;
@@ -212,10 +222,30 @@ public class PlayerController : MonoBehaviour
         _messenger.Publish(new SlapMessage(this, transform.position.x, transform.position.y, playerNumber));
     }
 
-    private void HandleSlapped(Vector2 position)
+    private void HandleSlapped(SlapMessage message)
     {
-        _logger.Log($"Someone slapped at position: ({position.x}, {position.y})");
-        
+        if (message.PlayerNumber == playerNumber)
+        {
+            _logger.Log($"I slapped at position: ({message.SlapPosition.x}, {message.SlapPosition.y})");
+            return;
+        }
+
+        Vector2 slapperPosition = message.SlapPosition;
+        Vector3 myPosition = transform.position;
+
+        if (slapperPosition.x < myPosition.x && (slapperPosition.x + 0.5f) >= myPosition.x)
+        {
+            _slapped = true;
+            dashTimer = 0;
+            dashState = DashState.Dashing;
+            _dashingDirection = FaceDirection.Left;
+        }
+
+    }
+
+    private void OnDestroy()
+    {
+        _slapMessageToken?.Dispose();
     }
 }
 
