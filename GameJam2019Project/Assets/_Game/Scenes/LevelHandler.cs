@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -46,7 +47,7 @@ public class LevelHandler : MonoBehaviour
     private Button _exitButton;
 
     [SerializeField]
-    private Text _countdownText;
+    private TextMeshProUGUI _countdownText;
 
     private EventSystem _eventSystem;
 
@@ -117,17 +118,15 @@ public class LevelHandler : MonoBehaviour
         }
 
         //Countdown
-
-        
         _audioSource.Play();
         
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(3.39f);
         _countdownText.text = "3";
         yield return new WaitForSeconds(0.5f);
         _countdownText.text = "2";
         yield return new WaitForSeconds(0.5f);
         _countdownText.text = "1";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.48f);
         _countdownText.text = "GO!";
 
         //Start following with camera
