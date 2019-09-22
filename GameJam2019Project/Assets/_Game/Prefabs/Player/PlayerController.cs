@@ -36,7 +36,12 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 3f;
     public float maxDash = 20f;
 
+    // Slap
+    public int slapsUsed = 0;
+    public int maxSlaps = 3;
     private bool _slapped;
+    private bool _isSlappingLocked = false;
+    private float _slapTimer = 0;
 
     public Vector2 savedVelocity;
 
@@ -219,7 +224,25 @@ public class PlayerController : MonoBehaviour
 
     private void Slap()
     {
-        _messenger.Publish(new SlapMessage(this, transform.position.x, transform.position.y, playerNumber));
+        if (slapsUsed >= maxSlaps)
+            return;
+
+        if (!_isSlappingLocked)
+        {
+            _messenger.Publish(new SlapMessage(this, transform.position.x, transform.position.y, playerNumber));
+
+            slapsUsed++;
+
+            _isSlappingLocked = true;
+            _slapTimer = Time.fixedDeltaTime + 0.5f;
+        }
+
+        if (_slapTimer <= 0)
+        {
+            _isSlappingLocked = false;
+        }
+
+        _slapTimer -= Time.fixedDeltaTime;
     }
 
     private void HandleSlapped(SlapMessage message)
