@@ -12,6 +12,9 @@ public class AnimationHandler : MonoBehaviour
 
     [SerializeField]
     private GameObject _dashParticlePrefab;
+    [SerializeField]
+    private GameObject _slapParticlePrefab;
+
 
     private PlayerController _playerController;
     private Animator _animator;
@@ -20,6 +23,8 @@ public class AnimationHandler : MonoBehaviour
     private Core.Loggers.ILogger _logger;
     ISubscriptionToken _changeDirectionToken;
     ISubscriptionToken _dashAnimationToken;
+    ISubscriptionToken _slappedAnimationToken;
+
 
     public float scaleSpeed = 1f;
 
@@ -48,6 +53,20 @@ public class AnimationHandler : MonoBehaviour
                 if (_playerSkin != null)
                 {
                     var particles = GameObject.Instantiate(_dashParticlePrefab);
+                    particles.transform.SetParent(_playerSkin.transform);
+                    particles.transform.localScale = Vector3.one;
+                    particles.transform.localPosition = Vector3.zero;
+                }
+            }
+        });
+
+        _slappedAnimationToken = _messenger.Subscribe<WasSlappedMessage>((message) =>
+        {
+            if (message.PlayerNumber == _playerController.playerNumber && _slapParticlePrefab != null)
+            {
+                if (_playerSkin != null)
+                {
+                    var particles = GameObject.Instantiate(_slapParticlePrefab);
                     particles.transform.SetParent(_playerSkin.transform);
                     particles.transform.localScale = Vector3.one;
                     particles.transform.localPosition = Vector3.zero;

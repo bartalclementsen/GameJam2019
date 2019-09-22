@@ -235,6 +235,8 @@ public class PlayerController : MonoBehaviour
 
         if (slapperPosition.x < myPosition.x && (slapperPosition.x + 0.5f) >= myPosition.x)
         {
+            _messenger.Publish(new WasSlappedMessage(this, playerNumber));
+
             _slapped = true;
             dashTimer = 0;
             dashState = DashState.Dashing;
