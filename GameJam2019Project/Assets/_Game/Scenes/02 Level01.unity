@@ -3712,11 +3712,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WinEffect
       objectReference: {fileID: 0}
-    - target: {fileID: 2922277353107489839, guid: 84078a085c944e94ebcede5e3187719e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 862218234164247240, guid: 84078a085c944e94ebcede5e3187719e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3771,11 +3766,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3110182885259433548, guid: 84078a085c944e94ebcede5e3187719e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84078a085c944e94ebcede5e3187719e, type: 3}
