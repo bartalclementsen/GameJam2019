@@ -105,8 +105,6 @@ public class StartSceneHandler : MonoBehaviour
 
     public void StartGame()
     {
-        _fadeService.DoFade(FadeDirection.ToBlack);
-
         if (_isStarting == true)
             return;
 
@@ -125,6 +123,8 @@ public class StartSceneHandler : MonoBehaviour
 
         if (playersToStart.Count() == 0)
             return;
+
+        _fadeService.DoFade(FadeDirection.ToBlack);
 
         Game.PlayersToStart = playersToStart;
         Game.PlayerColors = Game.PlayerColors.OrderBy(a => Guid.NewGuid()).ToList();
