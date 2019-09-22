@@ -113,11 +113,14 @@ namespace Fading
 
         private Image _image;
 
+        private void Awake()
+        {
+            Fading.FadeService.ActiveHandler = this;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
-            Fading.FadeService.ActiveHandler = this;
-
             _image = transform.GetComponent<Image>();
             Init();
 
