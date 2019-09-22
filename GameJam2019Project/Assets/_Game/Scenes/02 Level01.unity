@@ -988,6 +988,7 @@ MonoBehaviour:
   _victoryText: {fileID: 1486807644}
   _victoryRestartButton: {fileID: 824416715}
   _failMenu: {fileID: 1278326166}
+  _controlsMenu: {fileID: 0}
   _failRestartButton: {fileID: 1118986919}
   _continueButton: {fileID: 1629291932}
   _exitButton: {fileID: 773231114}
