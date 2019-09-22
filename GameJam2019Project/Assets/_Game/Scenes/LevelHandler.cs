@@ -92,21 +92,15 @@ public class LevelHandler : MonoBehaviour
     private IEnumerator InitializeGame() 
     {
         //Spawn Players
-        int playerCount = Game.NumberOfPlayers;
-
-        if (playerCount == 0)
-        {
-            playerCount = 2;
-        }
-
+        List<int> playersToStart = Game.PlayersToStart;
 
         _players = new List<PlayerController>();
 
-        for(int i = 0; i < playerCount; i++) {
+        for(int i = 0; i < playersToStart.Count(); i++) {
             GameObject player = Instantiate(_playerPerfab, _playerSpawn.position, Quaternion.identity, null);
 
             PlayerController playerController = player.GetComponent<PlayerController>();
-            playerController.playerNumber = i + 1;
+            playerController.playerNumber = Game.PlayersToStart[i];
             playerController.playerColor = Game.PlayerColors[(playerController.playerNumber - 1) % Game.PlayerColors.Count];
             playerController.canMakeActions = false;
             _players.Add(playerController);
