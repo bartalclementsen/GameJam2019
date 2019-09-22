@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        _body = GetComponent<Rigidbody2D> ();
+        _body = GetComponent<Rigidbody2D>();
 
         _logger = Game.Container.Resolve<ILoggerFactory>().Create(this);
         _messenger = Game.Container.Resolve<IMessenger>();

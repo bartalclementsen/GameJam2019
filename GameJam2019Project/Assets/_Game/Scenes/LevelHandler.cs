@@ -93,8 +93,6 @@ public class LevelHandler : MonoBehaviour
     {
         //Spawn Players
         int playerCount = Game.NumberOfPlayers;
-        Debug.Log(playerCount);
-        Debug.Log(Game.test);
 
         if (playerCount == 0)
         {
@@ -104,14 +102,12 @@ public class LevelHandler : MonoBehaviour
 
         _players = new List<PlayerController>();
 
-        int randomColorStartIndex = (int) Random.Range(0, Game.PlayerColors.Count - 1f);
-
         for(int i = 0; i < playerCount; i++) {
             GameObject player = Instantiate(_playerPerfab, _playerSpawn.position, Quaternion.identity, null);
 
             PlayerController playerController = player.GetComponent<PlayerController>();
             playerController.playerNumber = i + 1;
-            playerController.playerColor = Game.PlayerColors[(playerController.playerNumber + randomColorStartIndex) % Game.PlayerColors.Count];
+            playerController.playerColor = Game.PlayerColors[(playerController.playerNumber - 1) % Game.PlayerColors.Count];
             playerController.canMakeActions = false;
             _players.Add(playerController);
         }

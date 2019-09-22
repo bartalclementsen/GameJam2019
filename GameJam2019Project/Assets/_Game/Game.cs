@@ -11,7 +11,7 @@ public class Game
     public static IContainer Container { get; private set; }
 
     public static int NumberOfPlayers { get; set; }
-    public static List<Color32> PlayerColors { get; } = new List<Color32>() {
+    public static List<Color32> PlayerColors { get; set; } = new List<Color32>() {
         new Color32(0xea, 0x1b, 0x2c, 0xff),
         new Color32(0xd2, 0xa0, 0x2a, 0xff),
         new Color32(0x2b, 0x9a, 0x46, 0xff),

@@ -1,6 +1,8 @@
 ﻿using Fading;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -124,6 +126,7 @@ public class StartSceneHandler : MonoBehaviour
             return;
 
         SelectNumberOfPlayer(numberOfPlayers);
+        Game.PlayerColors = Game.PlayerColors.OrderBy(a => Guid.NewGuid()).ToList();
         SceneManager.LoadSceneAsync(1);
     }
 

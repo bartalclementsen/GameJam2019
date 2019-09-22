@@ -32,7 +32,7 @@ public class AnimationHandler : MonoBehaviour
             if (message.PlayerNumber == _playerController.playerNumber)
             {
                 _logger.Log($"Player {message.PlayerNumber} changed direction.");
-                this.transform.localScale = new Vector3(transform.localScale.x * -1f, transform.localScale.z, transform.localScale.z);
+                _playerSkin.transform.localScale = new Vector3(_playerSkin.transform.localScale.x * -1f, _playerSkin.transform.localScale.z, _playerSkin.transform.localScale.z);
             }
 
         });
