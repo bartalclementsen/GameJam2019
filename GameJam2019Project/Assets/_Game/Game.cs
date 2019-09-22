@@ -11,6 +11,8 @@ public class Game
     public static IContainer Container { get; private set; }
 
     public static List<int> PlayersToStart { get; set; }
+    
+    public static bool HasControlsMenuBeenShow { get; internal set; }
 
     public static List<Color32> PlayerColors { get; set; } = new List<Color32>() {
         new Color32(0xea, 0x1b, 0x2c, 0xff),

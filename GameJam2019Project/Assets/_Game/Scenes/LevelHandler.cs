@@ -38,6 +38,9 @@ public class LevelHandler : MonoBehaviour
     private GameObject _failMenu;
 
     [SerializeField]
+    private GameObject _controlsMenu;
+
+    [SerializeField]
     private Button _failRestartButton;
 
     [SerializeField]
@@ -62,6 +65,8 @@ public class LevelHandler : MonoBehaviour
 
     private void Start()
     {
+        _hasControlsMenuBeenShow = Game.HasControlsMenuBeenShow;
+
         _eventSystem = GameObject.FindObjectOfType<EventSystem>();
         _audioSource = GetComponent<AudioSource>();
         _messenger = Game.Container.Resolve<Core.Mediators.IMessenger>();
@@ -97,49 +102,61 @@ public class LevelHandler : MonoBehaviour
         _victoryMessageSubscriptionToken?.Dispose();
     }
 
+    private bool _isControlsMenuVisible;
+    private bool _hasControlsMenuBeenShow;
+
     private IEnumerator InitializeGame() 
     {
-        //Spawn Players
-        List<int> playersToStart = Game.PlayersToStart;
-
-        _players = new List<PlayerController>();
-
-        if(playersToStart == null)
+        if(_controlsMenu != null && _hasControlsMenuBeenShow == false) {
+            _menu.SetActive(true);
+            _controlsMenu.SetActive(true);
+            _isControlsMenuVisible = true;
+            _hasControlsMenuBeenShow = true;
+        }
+        else 
         {
-            playersToStart = new List<int>() { 1, 2, 3, 4 };
+            //Spawn Players
+            List<int> playersToStart = Game.PlayersToStart;
+
+            _players = new List<PlayerController>();
+
+            if(playersToStart == null)
+            {
+                playersToStart = new List<int>() { 1, 2, 3, 4 };
+            }
+
+            for(int i = 0; i < playersToStart.Count(); i++) {
+                GameObject player = Instantiate(_playerPerfab, _playerSpawn.position, Quaternion.identity, null);
+
+                PlayerController playerController = player.GetComponent<PlayerController>();
+                playerController.playerNumber = playersToStart[i];
+                playerController.playerColor = Game.PlayerColors[(playerController.playerNumber - 1) % Game.PlayerColors.Count];
+                playerController.canMakeActions = false;
+                _players.Add(playerController);
+            }
+
+            //Countdown
+            _audioSource.Play();
+            
+            yield return new WaitForSeconds(3.39f);
+            _countdownText.text = "3";
+            yield return new WaitForSeconds(0.5f);
+            _countdownText.text = "2";
+            yield return new WaitForSeconds(0.5f);
+            _countdownText.text = "1";
+            yield return new WaitForSeconds(0.48f);
+            _countdownText.text = "GO!";
+
+            //Start following with camera
+            foreach(PlayerController pc in _players) {
+                pc.canMakeActions = true;
+            }
+            _followCameraController.StartFollow();
+
+            
+            yield return new WaitForSeconds(1f);
+            _countdownText.text = "";
         }
-
-        for(int i = 0; i < playersToStart.Count(); i++) {
-            GameObject player = Instantiate(_playerPerfab, _playerSpawn.position, Quaternion.identity, null);
-
-            PlayerController playerController = player.GetComponent<PlayerController>();
-            playerController.playerNumber = playersToStart[i];
-            playerController.playerColor = Game.PlayerColors[(playerController.playerNumber - 1) % Game.PlayerColors.Count];
-            playerController.canMakeActions = false;
-            _players.Add(playerController);
-        }
-
-        //Countdown
-        _audioSource.Play();
-        
-        yield return new WaitForSeconds(3.39f);
-        _countdownText.text = "3";
-        yield return new WaitForSeconds(0.5f);
-        _countdownText.text = "2";
-        yield return new WaitForSeconds(0.5f);
-        _countdownText.text = "1";
-        yield return new WaitForSeconds(0.48f);
-        _countdownText.text = "GO!";
-
-        //Start following with camera
-        foreach(PlayerController pc in _players) {
-            pc.canMakeActions = true;
-        }
-        _followCameraController.StartFollow();
-
-        
-        yield return new WaitForSeconds(1f);
-        _countdownText.text = "";
     }
 
     
@@ -153,7 +170,7 @@ public class LevelHandler : MonoBehaviour
         if(_allPlayersDead == true)
             return;
 
-        if(_isPausePressed == false) {
+        if(_isPausePressed == false && _isControlsMenuVisible == false) {
             for(int i = 0; i < _players.Count; i++) {
                 _isPausePressed = Input.GetAxis($"Player{(i + 1)}Pause") > 0;
                 if(_isPausePressed) {
@@ -162,6 +179,25 @@ public class LevelHandler : MonoBehaviour
                     break;
                 }           
             }   
+        }
+        
+        if(_isControlsMenuVisible == true) {
+
+            bool shouldStartGame = Input.GetAxis($"Player1Jump") > 0 ||
+            Input.GetAxis($"Player2Jump") > 0 ||
+            Input.GetAxis($"Player3Jump") > 0 ||
+            Input.GetAxis($"Player4Jump") > 0;
+
+            if(shouldStartGame) {
+                _menu.SetActive(false);
+                _controlsMenu.SetActive(false);
+                _isControlsMenuVisible = false;
+
+                Game.HasControlsMenuBeenShow = true;
+
+                StartCoroutine(nameof(InitializeGame));
+            }
+            return;
         }
 
         //Check if all players a dead
