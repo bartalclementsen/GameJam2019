@@ -108,8 +108,6 @@ public class StartSceneHandler : MonoBehaviour
         if (_isStarting == true)
             return;
 
-        _isStarting = true;
-
         List<int> playersToStart = new List<int>();
 
         if (_playerOneJoined.activeSelf)
@@ -123,6 +121,8 @@ public class StartSceneHandler : MonoBehaviour
 
         if (playersToStart.Count() == 0)
             return;
+
+        _isStarting = true;
 
         _fadeService.DoFade(FadeDirection.ToBlack);
 
