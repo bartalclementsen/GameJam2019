@@ -77,7 +77,9 @@ public class LevelHandler : MonoBehaviour
     }
 
     private IEnumerator HandleVictory(PlayerController playerController) {
-        foreach(var player in _players) {
+        _audioSource.Stop();
+
+        foreach (var player in _players) {
 
             if(player.playerNumber != playerController.playerNumber)  
             {
