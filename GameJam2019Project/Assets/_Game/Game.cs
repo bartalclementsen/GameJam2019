@@ -10,7 +10,8 @@ public class Game
 {
     public static IContainer Container { get; private set; }
 
-    public static int NumberOfPlayers { get; set; }
+    public static List<int> PlayersToStart { get; set; }
+
     public static List<Color32> PlayerColors { get; set; } = new List<Color32>() {
         new Color32(0xea, 0x1b, 0x2c, 0xff),
         new Color32(0xd2, 0xa0, 0x2a, 0xff),
@@ -30,9 +31,6 @@ public class Game
         new Color32(0x00, 0x55, 0x8a, 0xff),
         new Color32(0x1a, 0x36, 0x68, 0xff)
     };
-
-
-    public static int test { get; set; } 
 
     private static Core.Loggers.ILogger _logger;
 

@@ -110,26 +110,23 @@ public class StartSceneHandler : MonoBehaviour
 
         _isStarting = true;
 
-        int numberOfPlayers = 0;
-        if (_playerOneJoined.activeSelf)
-            numberOfPlayers++;
-        if (_playerTwoJoined.activeSelf)
-            numberOfPlayers++;
-        if (_playerThreeJoined.activeSelf)
-            numberOfPlayers++;
-        if (_playerFourJoined.activeSelf)
-            numberOfPlayers++;
+        List<int> playersToStart = new List<int>();
 
-        if (numberOfPlayers == 0)
+        if (_playerOneJoined.activeSelf)
+            playersToStart.Add(1);
+        if (_playerTwoJoined.activeSelf)
+            playersToStart.Add(2);
+        if (_playerThreeJoined.activeSelf)
+            playersToStart.Add(3);
+        if (_playerFourJoined.activeSelf)
+            playersToStart.Add(4);
+
+        if (playersToStart.Count() == 0)
             return;
 
-        SelectNumberOfPlayer(numberOfPlayers);
+        Game.PlayersToStart = playersToStart;
+        Game.PlayerColors = Game.PlayerColors.OrderBy(a => Guid.NewGuid()).ToList();
         SceneManager.LoadSceneAsync(1);
-    }
-
-    public void SelectNumberOfPlayer(int numberOfPlayers)
-    {
-        Game.NumberOfPlayers = numberOfPlayers;
     }
 
     public void Exit()
