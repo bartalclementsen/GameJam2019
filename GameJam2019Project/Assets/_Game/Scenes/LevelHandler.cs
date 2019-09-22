@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -55,6 +56,7 @@ public class LevelHandler : MonoBehaviour
 
 
     private Core.Mediators.IMessenger _messenger;
+    private Fading.IFadeService _fadeService;
     private Core.Mediators.ISubscriptionToken _victoryMessageSubscriptionToken;
 
     private void Start()
@@ -62,10 +64,13 @@ public class LevelHandler : MonoBehaviour
         _eventSystem = GameObject.FindObjectOfType<EventSystem>();
         _audioSource = GetComponent<AudioSource>();
         _messenger = Game.Container.Resolve<Core.Mediators.IMessenger>();
+        _fadeService = Game.Container.Resolve<Fading.IFadeService>();
 
         _victoryMessageSubscriptionToken = _messenger.Subscribe<VictoryMessage>(vm => {
             StartCoroutine(nameof(HandleVictory), vm.VictoriousPlayerController);
         });
+
+        _fadeService.DoFade(FadeDirection.FromBlack, 1f);
 
         StartCoroutine(nameof(InitializeGame));
     }
