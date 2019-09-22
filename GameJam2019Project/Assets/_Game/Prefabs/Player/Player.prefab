@@ -403,6 +403,8 @@ MonoBehaviour:
   _playerSkin: {fileID: 4215249280172482396}
   _dashParticlePrefab: {fileID: 7574664343745623526, guid: bad186265097dce4c976b5b26c10d326,
     type: 3}
+  _slapParticlePrefab: {fileID: 7574664343745623526, guid: 1f63ed8db24b55544b0bed6bc7c98d49,
+    type: 3}
   scaleSpeed: 0.45
 --- !u!58 &6745161454342436075
 CircleCollider2D:
